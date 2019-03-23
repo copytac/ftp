@@ -2,4 +2,4 @@
 ./server
 ./client:
   ls [dir]
-  get file name
+  get [filename]
