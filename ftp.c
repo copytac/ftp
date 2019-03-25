@@ -10,7 +10,7 @@
 
 #define PORT "20021"
 #define N 1024
-
+//启动socket链接
 int startup(int port){
 
 	int server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -28,11 +28,22 @@ int startup(int port){
 	listen(server_fd, 5);
 	return server_fd;
 }
-/*
-int handle(){
-
+//解析命令
+int parse_cmd(char *buf, char *command_argv[], int n){
+	int i = 0, j = 0;
+	for(i = 0; i < n; ++i){
+		command_argv[i] = &buf[j];
+		while((buf[j] != ' ') && (buf[j] != '\n'))
+			++j;
+		if(buf[j] == '\n'){
+			buf[j] = 0;
+			break;
+		}
+		buf[j] = 0;
+		++j;
+	}
+	return 0;
 }
-*/
 
 int main(int argc, char const *argv[])
 {
@@ -57,6 +68,7 @@ int main(int argc, char const *argv[])
 			//setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(struct timeval));
 
 			FILE *fp = fdopen(client_fd, "r+");
+			//非缓冲模式
 			setvbuf(fp, NULL, _IONBF, 0);
 			char buf[N] = {0};
 			int optval;
@@ -65,61 +77,71 @@ int main(int argc, char const *argv[])
 			/*struct tcp_info info; 
   			int len = sizeof(info); 
 			if(getsockopt(client_fd, IPPROTO_TCP, TCP_INFO, &info, (socklen_t *)&len) < 0)
-				printf("error tcpinfo\n");*/
+				printf("error tcpinfo\n");
+			printf("%d\n", info.tcpi_state);*/
 			while(optval == 0){
 				memset(buf, 0, N);
 				fgets(buf, N, fp);
-
-				char *command_argv[3] = {0};
-				char cmd[4] = {0};
-				int i=0;
-				while((buf[i] != '\n') && (buf[i] != ' '))
-					++i;
-				command_argv[0] = cmd;
-				memcpy(command_argv[0], buf, i);
-
-				int count = strlen(&buf[++i]);
-				buf[i+count-1] = 0;
-				command_argv[1] =  &buf[i];
-				//memcpy(command_argv[1], &buf[i], count);
-				printf("%s", cmd);
-				if(strcmp("ls", cmd) == 0){
-					if(count == 0){
+				char *command_argv[4] = {0};
+				//解析命令和路径
+				parse_cmd(buf, command_argv, sizeof(command_argv));
+				//ls 处理
+				if(strcmp("ls", command_argv[0]) == 0){
+					if(command_argv[1] == NULL){
 						char pos[2] = ".";
 						command_argv[1] = pos;
 					}
-
 					DIR *dfp = opendir(command_argv[1]);
-					if(!dfp)
-						fputs("dir wrong.\n", fp);
-					struct dirent *dp;
-					while((dp = readdir(dfp))){
-						if(!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
-							continue;
-						else
-							fprintf(fp, "%s ", dp->d_name);
+					if(dfp){						
+						struct dirent *dp;
+						//发送全部文件名，一次太多接收buf会装不下，待解决
+						while((dp = readdir(dfp))){
+							if(!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
+								continue;
+							else
+								fprintf(fp, "%s ", dp->d_name);
+						}
+						fputs("\n", fp);
+						closedir(dfp);
 					}
-					fputs("\n", fp);
-					closedir(dfp);
+					else
+						fprintf(fp, "\"%s\" doesn't exist\n", command_argv[1]);
 
 				}
-				else if(strcmp("get", cmd) == 0){
-					FILE *file_fp = fopen(command_argv[1], "r");
-					if(!file_fp){
-						write(client_fd, NULL, 4);
-					}
-					memset(buf, 0, N);
+				//get 处理
+				else if(strcmp("get", command_argv[0]) == 0){
 					struct stat fileinfo;
-					fstat(fileno(file_fp), &fileinfo);
-					int size = htonl(fileinfo.st_size);
-					write(client_fd, &size, 4);
+					int size = 0;
+					//文件存在，可发
+					if(stat(command_argv[1], &fileinfo) != -1){
 
-					int i = 0, n = 0;
-					for(i = 0; i < fileinfo.st_size; i+=N){
-						n = fread(buf, 1, N, file_fp);
-						fwrite(buf, n, 1, fp);
+						FILE *file_fp = fopen(command_argv[1], "rb");
+						//setvbuf(file_fp, NULL, _IONBF, 0);
+						memset(buf, 0, N);
+						//发送文件大小，便于接收端控制读取数目
+						size = fileinfo.st_size;
+						int temp = htonl(size);
+						fwrite(&temp, sizeof(temp), 1, fp);
+						//续传文件当前大小
+						temp = 0;
+						fread(&temp, sizeof(temp), 1, fp);
+						int cur = ntohl(temp);
+						//发送内容
+						fseek(file_fp, cur, SEEK_SET);
+						int i, n = (size-cur)/N, last = (size-cur)%N;
+						for(i = 0; i < n; ++i){
+							memset(buf, 0, sizeof(buf));
+							fread(buf, N, 1, file_fp);
+							fwrite(buf, N, 1, fp);
+						}
+						memset(buf, 0, sizeof(buf));
+						fread(buf, last, 1, file_fp);
+						fwrite(buf, last, 1, fp);
+						fclose(file_fp);
 					}
-					fclose(file_fp);
+					//直接发大小，0
+					else
+						fwrite(&size, sizeof(size), 1, fp);
 				}
 				getsockopt(client_fd, SOL_SOCKET, SO_ERROR, (char *)&optval, (socklen_t *)&optlen);
 			}

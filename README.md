@@ -1,5 +1,2 @@
 # ftp
-./server
-./client:
-  ls [dir]
-  get [filename]
+./server  ./client: ls [path], get [path/filename]

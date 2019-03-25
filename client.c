@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <netinet/tcp.h>
+#include <sys/stat.h>
 //#include <poll.h>
 
 #define IP "127.0.0.1"
@@ -36,10 +37,7 @@ int main(int argc, char const *argv[])
 
 	int status = -1;
 
-
 	fgets(buf, N, stdin);
-	//struct timeval timeout={5, 0};
-	//fd_set fds;
 	/*struct tcp_info info; 
   	int len = sizeof(info); 
 	if(getsockopt(fd, IPPROTO_TCP, TCP_INFO, &info, (socklen_t *)&len) < 0)
@@ -55,6 +53,7 @@ int main(int argc, char const *argv[])
 			++i;
 		if(i == 0)
 			return -1;
+		memset(cmd, 0, sizeof(cmd));
 		memcpy(cmd, buf, i);
 
 		if(strcmp("ls", cmd) == 0){
@@ -62,6 +61,7 @@ int main(int argc, char const *argv[])
 		}
 		else if(strcmp("get", cmd) == 0){
 			status = 1;
+			//stat();
 		}
 		else{
 			fputs("wrong\n", stdout);
@@ -69,50 +69,60 @@ int main(int argc, char const *argv[])
 		}
 		fputs(buf, fp);
 
-		/*FD_ZERO(&fds);
-		FD_SET(fd, &fds);
-		int n = select(fd+1, &fds, NULL, NULL, &timeout);
-		if(n == -1){
-			printf("-1\n");
-			break;
-		}
-		else if(n == 0){
-			printf("0\n");
-			break;
-		}
-
-		else if(FD_ISSET(fd, &fds)){*/
 		if(status == 0){
 			memset(buf, 0, N);
-			//fread(buf, 1, N, fp);
-			//fwrite(buf, strlen(buf), 1, stdout);
 			fgets(buf, N, fp);
 			fputs(buf, stdout);
-
 		}
 		else if(status == 1){
 			int size = 0;
-			read(fd, &size, 4);
+			fread(&size, sizeof(size), 1, fp);
 			size = ntohl(size);
 			printf("%d\n", size);
-			if(size == 0){
-				fputs("file doesn't exist.", stdout);
-				return -1;
-			}
+			if(size != 0){
 
-			int end = strlen(buf);
-			buf[--end] = 0;
-			while(buf[--end] != '/')
-				;
-			FILE *file_fp = fopen(&buf[++end], "w");
+				int end = strlen(buf);
+				buf[--end] = 0;
+				while(buf[--end] != '/')
+					;
+				++end;
+				FILE *file_fp = NULL;
+				int cur = 0;
+				//同名文件不存在，直接写
+				if(access(&buf[end], F_OK) == -1)
+					file_fp = fopen(&buf[end], "wb+");
+				//对主机名称和URL查找数据库记录，看看是断点文件还是新文件
+				else{
+					//若为断点文件，续传
+					if(1){
+						file_fp = fopen(&buf[end], "ab+");
+						struct stat fileinfo;
+						stat(&buf[end], &fileinfo);
+						cur = fileinfo.st_size;
+					}
+					//为新文件，重命名下载
+					else{
 
-			memset(buf, 0, N);
-			int i = 0, n = 0;
-			for(i = 0; i < size; i+=N){
-				n = fread(buf, 1, N, fp);
-				fwrite(buf, n, 1, file_fp);
+					}
+				}
+				//setvbuf(file_fp, NULL, _IONBF, 0);
+				//发送断点大小，0为新文件下载
+				int temp = htonl(cur);
+				fwrite(&temp, sizeof(temp), 1, fp);
+				//接收内容
+				int i, n = (size-cur)/N, last = (size-cur)%N;
+				for(i = 0; i < n; ++i){
+					memset(buf, 0, sizeof(buf));
+					fread(buf, N, 1, fp);
+					fwrite(buf, N, 1, file_fp);
+				}
+				memset(buf, 0, sizeof(buf));
+				fread(buf, last, 1, fp);
+				fwrite(buf, last, 1, file_fp);
+				fclose(file_fp);
 			}
-			fclose(file_fp);
+			else
+				fputs("file doesn't exist.\n", stdout);
 		}
 		//}
 		getsockopt(fd, SOL_SOCKET, SO_ERROR, (char *)&optval, (socklen_t *)&optlen);
@@ -137,3 +147,17 @@ int main(int argc, char const *argv[])
 		fputs(buf, stdout);
 		printf("%d\n", ftell(fp));
 	}*/
+
+		/*FD_ZERO(&fds);
+		FD_SET(fd, &fds);
+		int n = select(fd+1, &fds, NULL, NULL, &timeout);
+		if(n == -1){
+			printf("-1\n");
+			break;
+		}
+		else if(n == 0){
+			printf("0\n");
+			break;
+		}
+
+		else if(FD_ISSET(fd, &fds)){*/
