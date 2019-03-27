@@ -92,10 +92,12 @@ int main(int argc, char const *argv[])
 						command_argv[1] = pos;
 					}
 					DIR *dfp = opendir(command_argv[1]);
-					if(dfp){						
+					if(dfp){				
 						struct dirent *dp;
-						//发送全部文件名，一次太多接收buf会装不下，待解决
-						while((dp = readdir(dfp))){
+						//发送全部文件名，一次太多接收buf会装不下，待解决（目前选择舍弃）
+						int name_len = 0;
+
+						while((dp = readdir(dfp)) && ((name_len+=dp->d_reclen)) < N){
 							if(!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
 								continue;
 							else
@@ -122,8 +124,10 @@ int main(int argc, char const *argv[])
 						size = fileinfo.st_size;
 						int temp = htonl(size);
 						fwrite(&temp, sizeof(temp), 1, fp);
+
 						//续传文件当前大小
 						temp = 0;
+
 						fread(&temp, sizeof(temp), 1, fp);
 						int cur = ntohl(temp);
 						//发送内容

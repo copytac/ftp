@@ -108,7 +108,9 @@ int main(int argc, char const *argv[])
 				//setvbuf(file_fp, NULL, _IONBF, 0);
 				//发送断点大小，0为新文件下载
 				int temp = htonl(cur);
+
 				fwrite(&temp, sizeof(temp), 1, fp);
+				fflush(fp);
 				//接收内容
 				int i, n = (size-cur)/N, last = (size-cur)%N;
 				for(i = 0; i < n; ++i){
