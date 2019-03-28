@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <netinet/tcp.h>
+//#include <netinet/tcp.h>
 
 #define PORT "20021"
 #define N 1024
@@ -96,7 +96,6 @@ int main(int argc, char const *argv[])
 						struct dirent *dp;
 						//发送全部文件名，一次太多接收buf会装不下，待解决（目前选择舍弃）
 						int name_len = 0;
-
 						while((dp = readdir(dfp)) && ((name_len+=dp->d_reclen)) < N){
 							if(!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
 								continue;
@@ -108,7 +107,6 @@ int main(int argc, char const *argv[])
 					}
 					else
 						fprintf(fp, "\"%s\" doesn't exist\n", command_argv[1]);
-
 				}
 				//get 处理
 				else if(strcmp("get", command_argv[0]) == 0){
@@ -127,7 +125,6 @@ int main(int argc, char const *argv[])
 
 						//续传文件当前大小
 						temp = 0;
-
 						fread(&temp, sizeof(temp), 1, fp);
 						int cur = ntohl(temp);
 						//发送内容

@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <netinet/tcp.h>
 #include <sys/stat.h>
+//#include <netinet/tcp.h>
+
 //#include <poll.h>
 
 #define IP "127.0.0.1"
@@ -14,11 +15,16 @@
 
 int main(int argc, char const *argv[])
 {
+	if(argc < 2)
+		argv[1] = IP;
+	else if(argc > 2)
+		return -1;
+	
 	int fd = socket(AF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in server_sock;
 	server_sock.sin_family = AF_INET;
-	server_sock.sin_addr.s_addr = inet_addr(IP);
+	server_sock.sin_addr.s_addr = inet_addr(argv[1]);
 	server_sock.sin_port = htons(atoi(PORT));
 	socklen_t socklen = sizeof(server_sock);
 
