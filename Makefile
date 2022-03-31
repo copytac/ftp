@@ -1,6 +1,6 @@
-all: ftp client
+all: ftpClient ftpServer
 
-ftp: ftp.c 
+ftpServer: ftpServer.c 
 	gcc $^ -o $@ -Wall
-client: client.c
+ftpClient: ftpClient.c
 	gcc $^ -o $@ -Wall

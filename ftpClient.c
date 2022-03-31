@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 	char cmd[4] = {0};
 
 	int status = -1;
-
+	printf("\nFTP> ");
 	fgets(buf, N, stdin);
 	/*struct tcp_info info; 
   	int len = sizeof(info); 
@@ -135,6 +135,7 @@ int main(int argc, char const *argv[])
 		//}
 		getsockopt(fd, SOL_SOCKET, SO_ERROR, (char *)&optval, (socklen_t *)&optlen);
 		memset(buf, 0, N);
+		printf("\nFTP> ");
 		fgets(buf, N, stdin);
 	}
 	close(fd);

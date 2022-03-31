@@ -49,6 +49,10 @@ int main(int argc, char const *argv[])
 {
 	/* code */
 	int server_fd = startup(atoi(PORT));
+	struct sockaddr_in server_sock;
+	socklen_t slen = sizeof(server_sock);
+	getsockname(server_fd, (struct sockaddr *)&server_sock, &slen);
+	printf("start at IP PORT: %s %d\n", inet_ntoa(server_sock.sin_addr), atoi(PORT));
 
 	struct sockaddr_in client_sock;
 	socklen_t socklen = sizeof(client_sock);
@@ -66,6 +70,7 @@ int main(int argc, char const *argv[])
 			//struct timeval timeout={5, 0};
 			//setsockopt(client_fd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(struct timeval));
 			//setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(struct timeval));
+			printf("connect at IP PORT : %s %d\n", inet_ntoa(client_sock.sin_addr), ntohs(client_sock.sin_port));
 
 			FILE *fp = fdopen(client_fd, "r+");
 			//非缓冲模式
