@@ -1,6 +1,6 @@
 all: ftpClient ftpServer
 
 ftpServer: ftpServer.c 
-	gcc $^ -o $@ -Wall
+	gcc $^ -o $@ -Wall 
 ftpClient: ftpClient.c
-	gcc $^ -o $@ -Wall
+	gcc $^ -o $@ -Wall -lpthread

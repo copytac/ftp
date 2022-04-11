@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Mar 31 09:35:54 2022
+# Make data base, printed on Mon Apr 11 16:09:45 2022
 
 # Variables
 
@@ -33,7 +33,7 @@ SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"zh-cn","availableLanguages":{}}
 # environment
-_ = /home/copytac/.vscode-server/bin/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/node
+_ = /home/copytac/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node
 # makefile (from 'Makefile', line 1)
 MAKEFILE_LIST :=  Makefile
 # 'override' directive
@@ -49,11 +49,13 @@ VSCODE_CWD = /mnt/c/Users/000/AppData/Local/Programs/Microsoft VS Code
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/copytac/.vscode-server/bin/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Python310/Scripts/:/mnt/c/Python310/:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/PuTTY/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Users/000/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/000/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/000/go/bin:/mnt/c/Users/000/AppData/Roaming/npm:/snap/bin
+PATH = /home/copytac/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Python310/Scripts/:/mnt/c/Python310/:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/PuTTY/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/usbipd-win/:/mnt/c/Program Files/Calibre2/:/mnt/c/Users/000/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/000/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/000/go/bin:/mnt/c/Users/000/AppData/Roaming/npm:/snap/bin
+# environment
+XDG_RUNTIME_DIR = /mnt/wslg/runtime-dir
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-44872ff1-8183-42b9-8588-a33e3323fe0f.sock
+VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-eecf18b4-bb44-46d0-ae8d-ed50251b9dac.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -61,13 +63,17 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 # automatic
 %F = $(notdir $%)
 # environment
+DISPLAY = :0
+# environment
 VSCODE_PIPE_LOGGING = true
 # environment
 PWD = /home/copytac/c/ftp
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/11_interop
+WSL_INTEROP = /run/WSL/4887_interop
+# environment
+PULSE_SERVER = /mnt/wslg/PulseServer
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -77,7 +83,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 LOGNAME = copytac
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
@@ -101,7 +107,7 @@ NAME = HP
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/000/.vscode/extensions/ms-vscode-remote.remote-wsl-0.64.2
+VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/000/.vscode/extensions/ms-vscode-remote.remote-wsl-0.66.0
 # default
 MAKE_COMMAND := make
 # default
@@ -130,6 +136,8 @@ HOSTTYPE = x86_64
 ^F = $(notdir $^)
 # default
 SUFFIXES := 
+# environment
+WAYLAND_DISPLAY = wayland-0
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # default
@@ -142,10 +150,8 @@ TERM = xterm-256color
 VSCODE_EXTHOST_WILL_SEND_SOCKET = true
 # environment
 WSL_DISTRO_NAME = Ubuntu20.04LTS
-# environment
-MOTD_SHOWN = update-motd
 # variable set hash-table stats:
-# Load=67/1024=7%, Rehash=0, Collisions=4/95=4%
+# Load=70/1024=7%, Rehash=0, Collisions=4/95=4%
 
 # Pattern-specific Variable Values
 
@@ -153,9 +159,9 @@ MOTD_SHOWN = update-motd
 
 # Directories
 
-# . (device 2064, inode 53408): 11 files, no impossibilities.
+# . (device 2080, inode 53408): 12 files, no impossibilities.
 
-# 11 files, no impossibilities in 1 directories.
+# 12 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -166,7 +172,7 @@ MOTD_SHOWN = update-motd
 # Not a target:
 ftpClient.c:
 #  Implicit rule search has been done.
-#  Last modified 2022-03-30 21:50:46.697984431
+#  Last modified 2022-04-11 16:07:29.543511711
 #  File has been updated.
 #  Successfully updated.
 
@@ -175,26 +181,19 @@ all: ftpClient ftpServer
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
+#  Successfully updated.
 
 # Not a target:
 ftpServer.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-.SUFFIXES:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2022-04-11 15:40:15.503502918
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-03-23 11:49:59.593714886
+#  Last modified 2022-04-11 16:09:14.783512277
 #  File has been updated.
 #  Successfully updated.
 
@@ -206,52 +205,34 @@ Makefile:
 
 ftpClient: ftpClient.c
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
-#  Last modified 2022-03-30 21:32:03.007992487
+#  Last modified 2022-04-11 16:09:19.523512303
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := ftpClient
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := ftpClient.c
-# automatic
-# | := 
-# automatic
-# < := ftpClient.c
-# automatic
-# ^ := ftpClient.c
-# automatic
-# ? := ftpClient.c
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/13=8%
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 6):
-	gcc $^ -o $@ -Wall
+	gcc $^ -o $@ -Wall -lpthread
 
 ftpServer: ftpServer.c
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Last modified 2022-04-11 15:44:29.393504284
+#  File has been updated.
+#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 4):
-	gcc $^ -o $@ -Wall
+	gcc $^ -o $@ -Wall 
 
 # files hash-table stats:
-# Load=8/1024=1%, Rehash=0, Collisions=0/26=0%
+# Load=8/1024=1%, Rehash=0, Collisions=0/25=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 16 / storage = 147 B / avg = 9 B
-# current buf: size = 8162 B / used = 147 B / count = 16 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 17 / storage = 158 B / avg = 9 B
+# current buf: size = 8162 B / used = 158 B / count = 17 / avg = 9 B
 
-# strcache performance: lookups = 31 / hit rate = 48%
+# strcache performance: lookups = 31 / hit rate = 45%
 # hash-table stats:
-# Load=16/8192=0%, Rehash=0, Collisions=1/31=3%
-# Finished Make data base on Thu Mar 31 09:35:54 2022
+# Load=17/8192=0%, Rehash=0, Collisions=1/31=3%
+# Finished Make data base on Mon Apr 11 16:09:45 2022
 
  
