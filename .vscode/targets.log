@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 11 16:09:45 2022
+# Make data base, printed on Tue Apr 12 08:47:41 2022
 
 # Variables
 
@@ -55,7 +55,7 @@ XDG_RUNTIME_DIR = /mnt/wslg/runtime-dir
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-eecf18b4-bb44-46d0-ae8d-ed50251b9dac.sock
+VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-2fac044a-1f0c-49f5-8d39-3a06060fae6d.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -71,7 +71,7 @@ PWD = /home/copytac/c/ftp
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/4887_interop
+WSL_INTEROP = /run/WSL/11_interop
 # environment
 PULSE_SERVER = /mnt/wslg/PulseServer
 # environment
@@ -83,7 +83,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 LOGNAME = copytac
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
@@ -150,8 +150,10 @@ TERM = xterm-256color
 VSCODE_EXTHOST_WILL_SEND_SOCKET = true
 # environment
 WSL_DISTRO_NAME = Ubuntu20.04LTS
+# environment
+MOTD_SHOWN = update-motd
 # variable set hash-table stats:
-# Load=70/1024=7%, Rehash=0, Collisions=4/95=4%
+# Load=71/1024=7%, Rehash=0, Collisions=4/96=4%
 
 # Pattern-specific Variable Values
 
@@ -172,7 +174,7 @@ WSL_DISTRO_NAME = Ubuntu20.04LTS
 # Not a target:
 ftpClient.c:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-11 16:07:29.543511711
+#  Last modified 2022-04-11 22:52:37.683642517
 #  File has been updated.
 #  Successfully updated.
 
@@ -186,7 +188,7 @@ all: ftpClient ftpServer
 # Not a target:
 ftpServer.c:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-11 15:40:15.503502918
+#  Last modified 2022-04-11 22:52:35.823642507
 #  File has been updated.
 #  Successfully updated.
 
@@ -205,7 +207,7 @@ Makefile:
 
 ftpClient: ftpClient.c
 #  Implicit rule search has not been done.
-#  Last modified 2022-04-11 16:09:19.523512303
+#  Last modified 2022-04-11 22:52:39.793642528
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 6):
@@ -213,7 +215,7 @@ ftpClient: ftpClient.c
 
 ftpServer: ftpServer.c
 #  Implicit rule search has not been done.
-#  Last modified 2022-04-11 15:44:29.393504284
+#  Last modified 2022-04-11 22:52:39.853642529
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 4):
@@ -233,6 +235,6 @@ ftpServer: ftpServer.c
 # strcache performance: lookups = 31 / hit rate = 45%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/31=3%
-# Finished Make data base on Mon Apr 11 16:09:45 2022
+# Finished Make data base on Tue Apr 12 08:47:41 2022
 
  

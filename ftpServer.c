@@ -7,10 +7,12 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "ftp.h"
 //#include <netinet/tcp.h>
 
 #define PORT "20021"
 #define N 1024
+
 //启动socket链接
 int startup(int port, int n) {
 
@@ -29,25 +31,7 @@ int startup(int port, int n) {
 	listen(server_fd, n);
 	return server_fd;
 }
-//解析命令
-int parse_cmd(char* buf, char* command_argv[], int n) {
-	int i = 0, j = 0;
-	for (i = 0; i < n; ++i) {
-		command_argv[i] = &buf[j];
-		while ((buf[j] != ' ') && (buf[j] != '\n'))
-			++j;
-		if (buf[j] == '\n') {
-			buf[j] = 0;
-			break;
-		}
-		buf[j] = 0;
-		++j;
-	}
-	return 0;
-}
-int max(int a, int b) {
-	return a > b ? a : b;
-}
+
 int main(int argc, char const* argv[]) {
 	/* code */
 	int port, n = 5;
@@ -158,7 +142,8 @@ int main(int argc, char const* argv[]) {
 					else if (strcmp("get", command_argv[0]) == 0) {
 						struct stat fileinfo;
 						int size = 0;
-						char* filename = command_argv[1];
+						char* filename = alloca(strlen(command_argv[1]));
+						strcpy(filename, command_argv[1]);
 						//文件存在，可发
 						if (stat(filename, &fileinfo) != -1) {
 
@@ -188,12 +173,68 @@ int main(int argc, char const* argv[]) {
 							fwrite(buf, last, 1, client_fp);
 
 							fclose(file_fp);
-							printf("send file:%s %d %d bytes.\n", filename, size, size - cur);
+							printf("file: %s %d bytes, send %d bytes.\n", filename, size, size - cur);
 
 						}
 						//直接发大小，0
 						else
 							fwrite(&size, sizeof(size), 1, client_fp);
+					}
+
+					else if (strcmp("put", command_argv[0]) == 0) {
+						int size = 0;
+						fread(&size, sizeof(size), 1, client_fp);
+						size = ntohl(size);
+						//printf("%d byte.\n", size);
+						if (size == 0) {
+							fputs("file doesn't exist.\n", stdout);
+							continue;
+						}
+						else {
+							int pos = get_name_pos_from_namebuf(command_argv[1]);
+
+							char* filename = alloca(strlen(&command_argv[1][pos]));
+							//printf("%s %d %d\n", filename, pos, (int)strlen(&buf[pos]));
+							strcpy(filename, &command_argv[1][pos]);
+
+							FILE* file_fp = NULL;
+							int cur = 0;
+							//同名文件不存在，直接写
+							if (access(filename, F_OK) == -1)
+								file_fp = fopen(filename, "wb+");
+							//对主机名称和URL查找数据库记录，看看是断点文件还是新文件
+							else {
+								//若为断点文件，续传
+								if (1) {
+									file_fp = fopen(filename, "ab+");
+									struct stat fileinfo;
+									stat(filename, &fileinfo);
+									cur = fileinfo.st_size;
+								}
+								//为新文件，重命名下载
+								else {
+
+								}
+							}
+							//setvbuf(file_fp, NULL, _IONBF, 0);
+							//发送断点大小，0为新文件下载
+							int temp = htonl(cur);
+
+							fwrite(&temp, sizeof(temp), 1, client_fp);
+							fflush(client_fp);
+							//接收内容
+							int i, n = (size - cur) / N, last = (size - cur) % N;
+							for (i = 0; i < n; ++i) {
+								memset(buf, 0, sizeof(buf));
+								fread(buf, N, 1, client_fp);
+								fwrite(buf, N, 1, file_fp);
+							}
+							memset(buf, 0, sizeof(buf));
+							fread(buf, last, 1, client_fp);
+							fwrite(buf, last, 1, file_fp);
+							fclose(file_fp);
+							printf("file: %s %d bytes, saved %d bytes.\n", filename, size, size - cur);
+						}
 					}
 				} while (1);
 				fclose(client_fp);
